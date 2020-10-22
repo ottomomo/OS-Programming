@@ -1,0 +1,134 @@
+Sesion 3: Usuarios
+Autores: Jorge Lopez, Octavio Sales
+
+-CUESTIONES:
+
+-cuestion 1:
+  /etc/default/useradd
+
+-cuestion 2:
+	/dev/tty: es un fichero de dispositivo de tipo caracter, que emula una conexión de tipo serie, para la comunicación con otros terminales.
+	/dev/sda: es un fichero de dispositivo de tipo bloque, que representa los volumenes/particiones logicas de disco.
+	He utilizado el comando ls -la con la ruta especificada.
+
+-cuestion 3:
+	$groups usuarioso 
+	usuarioso : usuarioso cdrom floppy sudo audio dip video plugdev fuse scanner bluetooth netdev
+
+-cuestion 4:
+	CHMOD: es un comando que permite cambiar los permisos de acceso de un archivo según un modo dado. 
+	Se pueden aplicar diferentes permisos al dueño del fichero, al grupo al que el fichero pertenece y al resto de usuarios.
+	CHOWN: es un comando que nos permite cambiar el propietario de un archivo.
+
+-cuestion 5:
+	No puedo ejecutarlo, permiso denegado.
+	
+
+-cuestion 6:
+	El directorio con el stiky bit actvado de nuestro sistema es 'tmp'
+	Es el directorio que contiene los ficheros de configuración, scripts de arranque, etc.
+	
+	 
+-usu1.c:
+
+int main()
+{
+/* Declarar apropiadamente las 
+   variables usuario y efectivo */
+	uid_t usuario;
+	gid_t efectivo;
+
+
+/* Obtener uid del proceso */       
+    usuario = getuid();
+	printf("UID = %d\n",usuario);
+/* Obtener uid efectivo del proceso */    
+    efectivo = getgid();
+    
+	printf("UID = %d EUID = %d\n",usuario,efectivo);
+    
+    if (usuario == efectivo)
+    	printf("Son iguales\n",usuario, efectivo);
+    else
+    	printf("Interesante. UID = (%d) EUID = %d\n",usuario, efectivo);
+	
+    return 1;                
+}    
+
+-usu2.c:
+
+char *getlogin(void);
+
+int main()
+{
+/* Definir apropiadamente usuario y su estructura pw */
+  uid_t usuario;       	//user ID
+  char   *pw_name;	//user NAME
+  char   *pw_passwd;	//user PASSWORD
+  struct passwd *pw;
+  //struct spwd *spw;
+	
+	
+/* Obtener el uid del proceso */
+  usuario = getuid();
+    
+/* Obtener la informacion de usuario con el identificador */
+  pw = getpwuid(usuario); 
+  printf("Entro al sistema como:\n name= %s\n uid=%d\n gid=%d\n home=%s\n shell=%s\n", pw->pw_name, pw->pw_uid, pw->pw_gid, pw->pw_dir, pw->pw_shell);
+
+/* Imprimir el pasword del usuario */
+  printf(" Password = %s\n", pw->pw_passwd);
+  printf(" El pasword es:%d\n", pw->pw_passwd);
+	
+/* Tratar de obtener la informacion de usuarioso con getspnam() 
+e imprimir el passwd*/
+  char *sp_namp;	//user NAME       
+  char *sp_pwdp;	//user PASSWORD
+  //struct spwd *sp = getspnam(usuario);
+  //printf("Entro al sistema sp como:\n name= %s\n, pwd=%d\n", sp->sp_namp, sp->sp_pwdp);
+/* Si no es posible usar getspnam(), explica por que y busca una solucion */
+
+    
+  return 1;
+}    
+
+-usu3.c:
+
+int main(){
+	uid_t uid;         
+	uid = getuid();
+	if(uid != 0){      // Si no es 0, no es root.
+	  	printf("ERROR: Debes lanzar el programa como \"root\".\n");
+	  	return -1;
+	}else{
+	    printf("UID: %d, EUID: %d\n",getuid(),geteuid());
+	    seteuid(usuarioso);
+	    int i;
+	    printf("UID: %d, EUID: %d\n",getuid(),geteuid());
+	   // for(i=0;i<99999999;i++){};
+	    printf("pulsa una tecla para volvcer a cambiar a root\n");
+	    getc(stdin);
+	}
+	setuid(uid);
+	printf("UID: %d, EUID: %d\n",getuid(),geteuid());
+	return 0;
+}
+
+-usu4.c:
+
+int main(){
+	uid_t uid;
+	uid_t euid;         
+	uid = getuid();    
+	euid = geteuid();
+	printf("UID: %d, EUID: %d\n",getuid(),geteuid());
+	printf("pulsa una tecla para cambiar los usuarios.\n");
+	getc(stdin);
+	setreuid(euid, uid);
+	printf("UID: %d, EUID: %d\n",getuid(),geteuid());
+	printf("pulsa una tecla para cambiar los usuarios.\n");
+	getc(stdin);
+	setreuid(uid, euid);
+	printf("UID: %d, EUID: %d\n",getuid(),geteuid());
+	return 1;
+}

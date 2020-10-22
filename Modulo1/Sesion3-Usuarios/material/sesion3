@@ -1,0 +1,17 @@
+Sesion 3: Usuarios
+Autores: Jorge Lopez, Octavio Sales
+
+-CUESTIONES:
+
+-cuestion 1:
+	/etc/login.defs ó /etc/default/useradd
+
+-cuestion 2:
+	/dev/tty: es un fichero de dispositivo de tipo caracter, que emula una conexión de tipo serie, para la comunicación con otros terminales.
+	/dev/sda: es un fichero de dispositivo de tipo bloque, que representa los volumenes/particiones logicas de disco.
+He utilizado el comando ls -la con la ruta especificada.
+
+-cuestion 3:
+	
+	 
+

@@ -1,0 +1,13 @@
+CC=gcc
+
+default:tarea
+
+tarea: usu4.c
+	$(CC) $^ -c
+	$(CC) -o usu4 usu4.o  
+#usu4.o:usu4.c
+#	$(CC) usu4.c -o usu4 usu4.o -c
+clean :
+	rm -rf *.o
+	rm usu4
+

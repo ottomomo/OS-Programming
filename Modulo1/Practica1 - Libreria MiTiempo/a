@@ -1,0 +1,13 @@
+CC=gcc
+
+default:tarea
+
+tarea: libmiTiempo.c
+	$(CC) $^ -c
+	$(CC) -o libmiTiempo.o -lrt
+	ar -rcs libmiTiempo.a libmiTiempo.o
+	$(CC) main.c -L. -lmiTiempo
+	./a.out
+clean :
+	rm -rf *.o
+	rm temp1

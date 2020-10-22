@@ -1,0 +1,182 @@
+Llamadas al sistema, sesion 2.
+Autores: Jorge López, Octavio Sales
+
+cuestion1:
+"man open" especifica un comando bash, que como tal no es una llamada al sistema.
+Introduciendo "man 2 open", sí te muestra la documentación de la llamada al sistema open.
+La sección 2 del manual, especifca las llamadas al sistema.
+
+Cuestion 2: 
+la llamada a la libreria de printf se encuentra en la
+seccion 3 (llamadas de biblioteca). Si usamos la llamada printf
+primero nos muestra la sección 1 (programas ejecutables) y no nos
+mostraría la información que queremos.
+
+cuestión3:
+syscalls
+
+cuestión4:
+Es necesario incluir el fichero de cabecera <sched.h>. No es necesario enlazar ninguna libreria.
+
+
+-api1:
+	#include<errno.h>
+	#include<stdio.h>
+	/*
+		api1.c
+		@author Jorge López Octavio Sales
+	*/
+
+	int main () {
+
+		int f1;
+		if((f1=open(0,0))==-1){		//hacemos una llamada erronea...
+			perror("main_open_f1: ");
+			return -1;
+		}
+		close(f1);
+
+		return 0;
+	}
+
+-api2:
+	//sys_errlist();
+	//muestra todos los posibles errores del sitema, llamar con printf.
+	/*
+		api2.c
+		@author Jorge López, Octavio Sales
+	*/
+	#include<errno.h>
+	#include<stdio.h>
+
+	int main () {
+	
+		int i;	
+	    	for(i=0;i<sys_nerr;++i){
+	    	    printf("Error num %d: %s\n", i ,sys_errlist[i]);
+	    	}
+		return 0;
+	}
+	
+-api3:
+	#include <stdio.h>
+	#include <sys/utsname.h>
+	/*
+		api3.c
+		@author Jorge López, Octavio Sales
+	*/
+
+	int main()
+	{
+	    int error;
+	    
+	    struct utsname *t;
+		t = malloc(sizeof(struct utsname)); 
+	    
+	    error = uname(t); /* Obtener la informacion del sistema */
+	    
+	/* Comprobar si se ha producido un error */
+	    if(error==-1){
+		perror("Se ha producido un error: %s\n");
+		return -1;
+	    }
+	    
+	/* Completar con los campos adecuados */    
+	    printf("sistema operativo: %s\n",t->sysname);
+	    printf("hostname: %s\n",t->nodename);
+	    printf("release: %s\n",t->release);
+	    printf("version: %s\n",t->version);
+	    printf("maquina: %s\n",t->machine);        
+	    
+	    return 1;
+	} 
+
+-api4:
+	#include <stdio.h>
+	#include <unistd.h>
+	/*
+		api4.c
+		@author Jorge López, Octavio Sales
+	*/
+
+	int main()
+	{
+	
+	    /* Obtener la informacion indicada con la funcion sysconf */
+	    printf("ticks/seg: %ld\n", sysconf(_SC_CLK_TCK));
+	    printf("Max. files: %ld\n", sysconf(_SC_OPEN_MAX));
+	    printf("Tamaño de pagina: %ld\n", sysconf(_SC_PAGESIZE));
+	    printf("Max. Hijos: %ld\n", sysconf(_SC_CHILD_MAX));
+	    
+	    return 1;
+	} 
+
+-api5:
+	/*
+		api5.c
+		@author Jorge López, Octavio Sales
+	*/
+	#include <unistd.h>
+	#include <errno.h>
+	#include <stdio.h>
+
+	/*Obtención sobre la información del sistema de  ficheros:	
+	  
+	–  long pathconf(char *path, int name);
+	–  long fpathconf(int filedes, int name);
+	*/
+
+	int main(){
+		long result;
+		/* Info del sistema de ficheros del directorio actual:*/
+		printf("Info del sistema de ficheros del directorio actual:\n");
+		errno = 0;
+		 if ((result = pathconf("./",_PC_NAME_MAX)) == -1)
+		    if (errno == 0)
+		       puts("NAME_MAX has no limit.");
+		    else perror("pathconf(_PC_NAME_MAX) error: ");
+		 else
+		    printf("Max. longitud de nombre: %ld\n", result);
+		errno = 0;
+		 if ((result = pathconf("./",_PC_LINK_MAX)) == -1)
+		    if (errno == 0)
+		       puts("_PC_LINK_MAX has no limit.");
+		    else perror("pathconf(_PC_LINK_MAX) error: ");
+		 else
+		    printf("Max. enlaces: %ld\n", result);
+		errno = 0;
+		 if ((result = pathconf("./",_PC_PATH_MAX)) == -1)
+		    if (errno == 0)
+		       puts("_PC_PATH_MAX has no limit.");
+		    else perror("pathconf(_PC_PATH_MAX) error: ");
+		 else
+		    printf("Max. longitud del path: %ld\n", result);
+
+		/* Info del sistema de ficheros del directorio /dev :*/
+		printf("Info del sistema de ficheros del directorio '/dev' :\n");
+		errno = 0;
+		 if ((result = pathconf("/dev",_PC_NAME_MAX)) == -1)
+		    if (errno == 0)
+		       puts("NAME_MAX has no limit.");
+		    else perror("pathconf(_PC_NAME_MAX) error: ");
+		 else
+		    printf("Max. longitud de nombre /dev: %ld\n", result);
+		errno = 0;
+		 if ((result = pathconf("/dev",_PC_LINK_MAX)) == -1)
+		    if (errno == 0)
+		       puts("_PC_LINK_MAX has no limit.");
+		    else perror("pathconf(_PC_LINK_MAX) error: ");
+		 else
+		    printf("Max. enlaces /dev: %ld\n", result);
+		errno = 0;
+		 if ((result = pathconf("/dev",_PC_PATH_MAX)) == -1)
+		    if (errno == 0)
+		       puts("_PC_PATH_MAX has no limit.");
+		    else perror("pathconf(_PC_PATH_MAX) error: ");
+		 else
+		    printf("Max. longitud del path /dev: %ld\n", result);
+
+
+	    
+		return 1;
+	}

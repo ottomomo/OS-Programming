@@ -1,0 +1,15 @@
+Sesion 4 Temporizacion
+Autores: Octavio Sales, Jorge López
+
+-Cuestion 1:
+	Un jiffy es el intervalo de timepo que transcurre entre dos ticks del reloj del kernel.
+	El valor de HZ es 250.
+
+-Cuestion 2:
+	El RTC es el reloj del Hardware, es decir, es independiente del sistema ya que posee una pila y simpre esta en funcionamiento (a no ser que se le acabe la pila) uno de sus proporsitos es mantener la hora actual. En cambio El system clock se arranca con el sistema, y sirve para mantener estadisticas, como el tiempo de un proceso, etc.
+	No coincide la hora del RTC y la hora del sistema. Con 'hwclock --hctosys' modificamos la hora del sistema a la hora del RTC.
+
+-Cuestion 3:
+	 con el comando 'time' y despueś la orden a ejecutar el sistema mostrará por la salida estandar el tiempo de ejecución del proceso.
+
+

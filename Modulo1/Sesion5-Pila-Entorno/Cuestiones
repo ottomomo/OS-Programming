@@ -1,0 +1,17 @@
+Sesion 5
+Autores Octavio Sales, Jorge López
+
+Cuestiones:
+
+-Cuestion 1:
+	echo $PATH. No se ejecuta porque cada shell es un entorno (proceso) diferente y no se comparten la variables de entorno, por tanto en la nueva shell no esta modificada la variable PATH.
+
+-Entorno.c:
+	Si creamos en la shell la variable EDITOR y despues ejecutamos 'entorno', muestra el valor que tiene EDITOR y lo modifica, pero esa modificacion solo es valida para ese proceso('entorno'), es decir, cuando termina la ejecución y vuelves a la shell (proceso padre) EDITOR no esta modificado.
+
+-PilaInicial.c:
+	Muestra las variables de entorno ubicadas en la pila de proceso. ya que se encuentran justo debajo de los argumentos de entrada, y el indice del for lo igualas al numero de argumentos... por lo tanto nunca te va a mostrar los argumentos que van desde 0 a N-1.
+
+-pila-buffer.c:
+	 ¿Cambiara el valor de alguna variable durante/tras la llamada a foo()?
+

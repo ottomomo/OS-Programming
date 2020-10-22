@@ -1,0 +1,11 @@
+CC=gcc
+
+default:tarea
+
+tarea: temp3.c
+	$(CC) $^ -c
+	$(CC) -o temp3 temp3.o -lrt  
+clean :
+	rm -rf *.o
+	rm temp3
+

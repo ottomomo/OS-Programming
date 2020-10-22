@@ -1,0 +1,9 @@
+
+# LIBRERIA ESTATICA (*.a)
+usuarioso@debianASO:~/aso/Practica1$ gcc -static -c libmiTiempo.c -o libmiTiempo.o
+usuarioso@debianASO:~/aso/Practica1$ ar -rcs libmiTiempo.a libmiTiempo.o
+ 
+# ENLAZADO DE LIBRERIA ESTATICA
+usuarioso@debianASO:~/aso/Practica1$ gcc main.c -L. -lmiTiempo
+usuarioso@debianASO:~/aso/Practica1$ ./a.out 
+

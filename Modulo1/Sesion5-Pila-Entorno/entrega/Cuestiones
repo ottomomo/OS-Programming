@@ -1,0 +1,24 @@
+Sesion 5
+Autores Octavio Sales, Jorge López
+
+Cuestiones:
+
+-Cuestion 1:
+	echo $PATH. No se ejecuta porque cada shell es un entorno (proceso) diferente y no se comparten la variables de entorno, por tanto en la nueva 		shell no esta modificada la variable PATH.
+
+-Entorno.c:
+	Si creamos en la shell la variable EDITOR y despues ejecutamos 'entorno', muestra el valor que tiene EDITOR y lo modifica, pero esa 		modificacion solo es valida para ese proceso('entorno'), es decir, cuando termina la ejecución y vuelves a la shell (proceso padre) EDITOR no 		esta modificado.
+
+-PilaInicial.c:
+	Muestra las variables de entorno ubicadas en la pila de proceso. ya que se encuentran justo debajo de los argumentos de entrada, y el indice 		del for lo igualas al numero de argumentos... por lo tanto nunca te va a mostrar los argumentos, que van desde 0 a N-1.
+
+-pila-buffer.c:
+	- ¿Cambiara el valor de alguna variable durante/tras la llamada a foo()?
+	La variable local de foo 'nombre'.
+	- Trata de forzar una Violacion de Segmento. ¿Por que se produce? 
+	al introducir por la entrada estandar una cadena muy larga y guardarla en la variable nombre, la cual es de tamaño fijo.
+	- Trata de conseguir que cambie el valor de las variables 'despues' y/o 'antes'  sin que se produzca la Violacion de Segmento 
+	con 31 caracteres conseguimos antes = 0 y despues = 10, 31 bytes, son la resta entre las direcciones de las variables.
+	- Soluciona el problema!
+	Utilizar la funciion fgets(), en vez de gets(). Ya que fgets(char *s, int tam, FILE *flujo); lee como mucho uno menos de tam caracteres del 		flujo y los guarda en el búfer al que apunte s.
+	SOLUCION: fgets(nombre, 16, stdin);

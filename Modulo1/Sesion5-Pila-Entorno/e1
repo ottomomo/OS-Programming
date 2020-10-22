@@ -1,0 +1,12 @@
+CC=gcc
+
+default:tarea
+
+tarea: entorno.c
+	$(CC) $^ -c
+	$(CC) -o entorno entorno.o  
+
+clean :
+	rm -rf *.o
+	rm entorno
+
