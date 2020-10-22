@@ -1,2 +1,2 @@
 # OS-Programming
-Fundamentos y programación de sistemas Linux
+Fundamentos y programación de sistemas operativos
