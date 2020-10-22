@@ -1,0 +1,46 @@
+Sesion 8: Cerrojos
+Autores: Octavio Sales, Jorge López
+
+-FS ext2:
+    -dd: copia de un fichero origen a otro destino, con el formato introducido por paramtero. 
+ En este caso en particluar crea una imagen de disco, con tamaño de bloque 1KB, con tamaño total de 100k bloques.
+    -mkfs: crea un sistema de ficheros de tipo ext2, con tamaño bloque 1KB, en el fichero previamente creado con dd.
+    -mount: monta el sistema de ficheros creado en un dispositivo.
+    -/etc/fstab: contiene la lista de discos y particiones disponibles. En ella se indica como montar cada dispositivo y qué configuración utilizar.
+    -/etc/mtab:lista los sistemas de ficheros ya montados, así como sus opciones de inicialización.
+    -dd: crea el archivo file.bin a partir del fichero especial /dev/urandom que genera numeros aleatorios.
+    -/dev/random: fichero especial que genera numeros aleatorios.
+    -dd: crea el archivo file.bin a partir del fichero especial /dev/urandom que genera numeros aleatorios.
+    -ls y du: la diferencia de tamaño, es porque al hacer la copia con dd se utiliza la opcion -seek=11, 
+ que se salta N bloques del archivo destino antes realizar la operación de copiado.(rellena con 0 los primeros 11 bloques).
+    -tamaño fisico y logico:  1º dd (seek=0):   ls:1024B    du:1024B
+			      2º dd (seek=11):  ls: 12288B  du:1KB
+			      3º dd (seek=12):  ls: 13312B  du: 2KB
+			      4º dd (seek=268): ls: 275456B du: 3KB
+	la diferencia es que el sistema reserva n bloques para el fichero, pero realmente estan vacios.
+	
+-FS vfat:
+    -tamaño fisico y logico:	 1º dd (seek=0):   ls:1024B    du:1024B
+				 2º dd (seek=11):  ls: 12288B  du:1KB
+				 3º dd (seek=12):  ls: 13312B  du: 2KB
+				 4º dd (seek=268): ls: 275456B du: 3KB
+				 
+-FS ext4:
+    -tamaño fisico y logico:	 1º dd (seek=0):   ls:1024B    du:1024B
+				 2º dd (seek=11):  ls: 12288B  du:1KB
+				 3º dd (seek=12):  ls: 13312B  du: 2KB
+				 4º dd (seek=268): ls: 275456B du: 3KB
+				 
+-bloquea.c:
+      Con el cerrojo se sincronizan bien los procesos, (se lleva bien la cuenta de accesos). Con el Flag -DNONE no se implementa el cerrojo, y por tanto 
+  los procesos no estan sincronizados.
+  
+-bloquea_close.c:
+      No se sincronizan los procesos, porque el bloqueo se realiza a nivel de inodo y se realiza un close() del fichero (aunque con fd diferente),
+   lo que con lleva la liberacion del cerrojo.
+   
+-bloquea_flock_close.c:
+      se sincroniza, porque la funcion flock() asocia el cerrojo al decriptor del fichero.
+      
+-simple_lock.c:
+      

@@ -1,0 +1,64 @@
+Sesion: Manejo de Ficheros
+Autores: Octavio Sales, Jorge López
+
+Cuestiones:
+
+-Creacion de ficheros:
+	El fichero prueba tiene permisos: rw-r-r(0644).umask tiene (0022), por tanto la llamada open de touch sería: 
+(mode & (~umask))=(0666 & (~022))=(0644). Con 'umask 0002' el grupo de usuario tambien tendria permisos de escritura.
+
+-Tamaño ficheros:
+	nuevoFichero ocupa 11 Bytes. Con stat muestra que ha reservado 8 bloques de 512 Bytes, lo que significa que ocupa 4096 Bytes en disco
+  %b     Number of blocks allocated (see %B) = 8
+  %B     The size in bytes of each block reported by %b = 512
+  %o     I/O block size = 4096
+  %s     Total size, in bytes = 11 Bytes
+
+-Enlaces:
+	el enlace miLink ocupa 12 Bytes, que se corresponde a lo que ocupan los caracteres, de la ruta que le hemos introducido. Dependiendo de la ruta (relativa o absoluta) al fichero que introduzcas, el enlace ocupará mas o menos.
+
+-Nodos-i:
+	Un enlace simbolico tiene su propio nodo-i, el cual contiene la ruta correspondiente al fichero al que apunta el enlace.
+En cambio un enlace rigido, si que comparte el mismo nodo-i con el fichero al que apunta.
+
+-Redireccion:
+	Redirige la salida estandar (en este caso "Hola mundo") a el fichero nuevoFichero (sobrescribiendo cualquier contenido).
+Bash, en este caso en particular, internamente lo que hace es primero ejecutar la instruccion 'echo', lee la cadena, pasado por parametro, pero no la muestra por la salida estandar por que se encuentra con '>', a consecuencia de esto antes de terminar esta ejecución crea otro proceso (fork()) el cual ejecuta la siguiente instruccion dada, crea el fichero 'nuevoFichero' y escribe en él la cadena redireccionada.
+Redireccioanmiento de la salida de error: '>2'
+
+-Open.c:
+	1: la llamada a open() con los flags: O_CREAT|O_WRONLY|O_TRUNC. es equivalente a create().
+	2: O_EXCL|O_CREAT.
+	3: cuando la ruta sea incorrecta o nula.
+	4: O_DIRECTORY
+	5: O_LARGEFILE
+
+-Lseek.c:
+	Resultado de  hexdump -C prueba:
+	00000000  48 4f 4c 41 2c 00 00 00  00 00 00 00 00 00 00 00  |HOLA,...........|
+	00000010  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+	*
+	00004000  20 6d 75 6e 64 6f                                 | mundo|
+	00004006
+
+-rw.c:
+	 gcc -c -DTAM_BLOQUE=4096 rw.c
+	 gcc -o rw rw.o -lrt 
+	 sudo time ./rw
+No se aprecia diferencia, debido a que en el buffer siempre se almacena un bloque, aunque solo quieras acceder a un byte, por tanto se acceden las mismas veces a disco(pero no a memoria).
+
+-lee_enlace.c:
+	Se almacena la ruta intrducida al crear el enlace simbolico.
+
+-links.c:
+	Son diferentes, el tamaño del enlace rigido se corresponde con el del tamaño, del fichero original, que ocupa en disco. El del simbolico, con los caracteres introducidos para indicar la ruta del fichero apuntado.(Según lo que he leido con lstat() en caso de examinar un enlace símbolico, examina el propio enlace).
+	Resultado con lstat():
+Tamaño del fichero original: 0 bytes
+Tamaño de el enlace rígido: 0 bytes
+Tamaño de el enlace simbolico: 59 bytes
+
+
+	
+ 
+ 
+ 

@@ -1,0 +1,18 @@
+Sesion 7: Buffering
+Autores: Octavio Sales y Jorge López
+
+-CUESTIONES:
+
+-/dev/zero:
+	dev/zero se usa para proveer un flujo de caracteres para sobrescribir información o para crear ficheros de un determinado tamaño. Es un archivo especial que actúa como fuente y sumidero de información. Abastece tantos caracteres null como se lean de él. Provee tantos caracteres null como solicite su contenedor. Pero a su vez, todas las escrituras a /dev/zero se descartan y no tienen ningún efecto. 
+*REF:https://lifebitblog.wordpress.com/2014/03/13/aclarando-conceptos-diferencias-entre-devnull-y-devzero/.
+
+-Copia con dd:
+	copia desde el fichero '/dev/zero' a el fichero 'salida' con un  tamaño  de  bloque 'BS', 'count' bloques.
+
+-rw-c:
+	 O_SYNC El  fichero  se  abre  para  E/S  síncrona.  Cualesquiera  operaciones  de  escritura write sobre el descriptor de fichero
+              resultante bloquearán el proceso que ha efectuado la llamada hasta que los datos hayan sido  físicamente  escritos  en  el
+              dispositivo subyacente.
+ gcc -c -DTAM_BLOQUE=4096 rw.c
+	 gcc -o rw rw.o -lrt 
