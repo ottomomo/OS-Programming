@@ -1,0 +1,32 @@
+Sesion9: procesos
+Autores: Ocatvio Sales, Jorge López
+
+-exec.c:
+	la llamada exec cambia la imagen del proceso por la pasada por parametro, por tanto si todo va bien, nunca se va ejecutar. En caso de que fallara el exec() no cambiaría de imagen y si se mostraria el printf.
+
+-getcwd.c:
+	la shell(padre) y el programa getcwd(hijo) son procesos diferentes(el hijo clona el entorno del padre, pero no se comparten), en la ejecucion de getcwd se cambia de directorio. Al terminar la ejecución se vuelve al proceso padre (shell) el cual no se ve afectado por getcwd.
+
+-getrlimit:
+	la capacidad de la pila por defecto es: 8192 KBytes. Si se fija el tamaño de la pila a 256 no muestra todo la información, ya que se llena la pila.
+	
+-getsusage:
+	el timepo de ejecucion del usuario lo ocupa el bucle y las operaciones aritmetico-logicas, y el timepode kernel lo ocupan el open, read, write...
+	en definitiva las llamadas al sistema. con getrusage() ru_idrss muestra el esapcio de memoria no compartida.
+
+-wait.c:
+	Al hacer la llamada a la funcion exit(), esta finaliza la ejecucion del proceso y comunica el entero status al proceso padre 
+	ya que se hace una llamada a la función waitpid().
+	No se produce ningún error.
+
+-minshell: 
+	- ¿Que funcionalidad tiene?
+	recibe un comando, lo parsea y ejecuta.
+	- ¿Que ocurre si eliminamos la llamada a exit() de la liınea 51?
+	
+	- ¿Que ocurre si no se realiza la llamada a waitpid()?
+	- ¿Que funcion realiza la llamada parse(). ¿Por que se utiliza la llamada realloc()? ¿No bastara con malloc()?
+	
+
+
+

@@ -1,0 +1,13 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <unistd.h>
+int main()   {
+
+  int rv;
+    
+  execlp("p", "p", "-le", NULL);
+
+  perror("execlp");
+  printf("\n\n El Comando termino correctamente\n\n");
+}
